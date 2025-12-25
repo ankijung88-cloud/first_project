@@ -81,7 +81,7 @@ export default function Footer() {
 
         {/* BOTTOM */}
         <div className="mt-5 pt-5 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-          <p>© 2025 FORKAST RESTAURANT ANALYTICS. All rights reserved.</p>
+          <p>© 2025 FLOW. All rights reserved.</p>
 
           <div className="flex gap-">
             <a href="#" className="hover:text-white transition">

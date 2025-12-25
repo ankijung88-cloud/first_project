@@ -5,20 +5,43 @@ export default function Intro() {
         <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center gap-12 lg:gap-24 mt-12">
           {/* 텍스트 영역 */}
           <div className="flex-1 text-center lg:text-left">
-            <p className="text-primary font-semibold text-sm sm:text-base">
+            <p className="inline-flex items-center px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 font-semibold text-sm sm:text-base shadow-[0_4px_8px_rgba(0,0,0,0.25)]">
               스마트 위험 감지 시스템
             </p>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 leading-snug">
-              보이지 않는 위험,
-              <br />
-              가장 먼저 감지합니다
+            <h2
+              className="
+                mt-4
+                font-sans
+                font-black
+                leading-normal
+                text-3xl sm:text-4xl md:text-5xl
+              "
+            >
+              <span className="block drop-shadow-[0_5px_5px_rgba(0,0,0,0.4)] text-[#1B3A2E] leading-normal">
+                보이지 않는 위험
+              </span>
+
+              <span
+                className="
+                  block
+                  bg-gradient-to-r from-sky-500 to-emerald-500
+                  bg-clip-text text-transparent
+                  drop-shadow-[0_5px_5px_rgba(0,0,0,0.4)]
+                  leading-normal
+                "
+              >
+                가장 먼저 감지합니다.
+              </span>
             </h2>
             <br />
-            <h4 className="text-gray-700 text-sm sm:text-base md:text-lg">
-              보이지 않는 위험까지 놓치지 않고 가장 먼저 감지합니다.
-              <br />
-              당신의 안전을 지키는 든든한 첫 번째 방패가 되겠습니다.
+            <h4 className="text- text-sm sm:text-base md:text-lg">
+              <span className="block leading-normal">
+                보이지 않는 위험까지 놓치지 않고 가장 먼저 감지합니다.
+              </span>
+              <span className="block leading-normal">
+                당신의 안전을 지키는 든든한 첫 번째 방패가 되겠습니다..
+              </span>
             </h4>
 
             <button className="mt-6 sm:mt-8 bg-primary text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full transition-transform hover:scale-105 text-sm sm:text-base">

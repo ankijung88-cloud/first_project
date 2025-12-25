@@ -5,6 +5,9 @@ export default {
       colors: {
         primary: "#03d983", // 원하는 색
       },
+      fontFamily: {
+        sans: ["'Plus Jakarta Sans'", "system-ui", "sans-serif"],
+      },
     },
   },
   plugins: [],

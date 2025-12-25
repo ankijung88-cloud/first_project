@@ -73,3 +73,6 @@ button:focus-visible {
 html {
   scroll-behavior: smooth;
 }
+body {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+}

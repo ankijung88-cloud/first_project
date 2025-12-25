@@ -24,7 +24,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const menus = ["회사소개", "현지투어", "홍보센터", "인재채용"];
+  const menus = ["홈", "흡연구역", "혼잡도", "가이드"];
 
   return (
     <nav
