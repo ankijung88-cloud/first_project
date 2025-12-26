@@ -12,7 +12,6 @@ export default function Navbar() {
 
       if (currentY === 0) {
         setHide(true); // 첫화면 숨김
-        setMenuOpen(true); // 스크롤 시 모바일 메뉴 닫기
       } else {
         setHide(window.scrollY < 50);
       }
@@ -33,13 +32,9 @@ export default function Navbar() {
       }`}
     >
       <div className="bg-white/90 backdrop-blur shadow-sm">
-        {/* 최대폭 1280px로 간격제한 -> 실무기준추천세팅 */}
-        <div className="flex justify-between items-center px-8 py-0.8 max-w-7xl mx-auto">
-          {/* <div className="flex justify-between items-center px-8 py-4 max-w-[1440px] mx-auto"> 최대폭 1440px로 간격제한*/}
-          {/* <div className="flex justify-between items-center px-8 py-4"> 화면폭에 맞춤 */}
-
+        <div className="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
           {/* Logo */}
-          <div className="font-bold text-xl text-primary flex items-center gap-3 mb-4 mt-4">
+          <div className="font-bold text-xl text-primary flex items-center gap-3">
             <div className="w-10 h-10">
               <img
                 src="/image/logo.png"
@@ -68,7 +63,10 @@ export default function Navbar() {
           </ul>
 
           {/* Mobile Hamburger */}
-          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+          <button
+            className="md:hidden"
+            onClick={() => setMenuOpen((prev) => !prev)}
+          >
             {menuOpen ? (
               <XMarkIcon className="w-7 h-7" />
             ) : (

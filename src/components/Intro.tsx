@@ -1,6 +1,6 @@
 export default function Intro() {
   return (
-    <section className="w-full h-full bg-primary/5 py-24">
+    <section className="w-full bg-primary/5 min-h-screen">
       <div className="w-full py-16 px-4 sm:px-6 lg:px-16 flex justify-center">
         <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center gap-12 lg:gap-24 mt-12">
           {/* 텍스트 영역 */}
@@ -81,10 +81,17 @@ export default function Intro() {
           </div>
 
           {/* 영상 박스 영역 */}
-          <div className="flex-1 flex justify-center mt-8 lg:mt-0">
-            <div className="w-full max-w-[630px] h-[280px] sm:h-[360px] lg:h-[420px] bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="flex-1 flex justify-center mt-8 lg:mt-0 w-full">
+            <div
+              className="
+      w-full max-w-[630px]
+      h-[280px] sm:h-[360px] lg:h-[420px]
+      bg-white rounded-xl shadow-md overflow-hidden
+      flex-shrink-0
+    "
+            >
               <video
-                src="/video/video-03.mp4"
+                src="/video/family_01.mp4"
                 autoPlay
                 loop
                 muted
