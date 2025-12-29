@@ -1,6 +1,10 @@
-export default function Guide() {
+interface GuideProps {
+  onWalkClick: () => void;
+}
+
+export default function Guide({ onWalkClick }: GuideProps) {
   return (
-    <div className="relative h-screen flex flex-col items-center justify-center text-center bg-cover bg-center">
+    <div className="relative w-screen h-screen flex flex-col items-center justify-center text-center bg-cover bg-center">
       <img
         className="absolute top-0 left-0 w-full h-full object-cover"
         src="/image/guide_bg.png"
@@ -16,7 +20,10 @@ export default function Guide() {
           해당 서비스의 가이드 소개 부분입니다.
         </p>
 
-        <button className="mt-8 bg-primary text-white px-8 py-3 rounded-full hover:scale-105 transition">
+        <button
+          onClick={onWalkClick} // 클릭 시 WalkCourseList가 열리도록 함수 연결
+          className="mt-8 bg-primary text-white px-8 py-3 rounded-full hover:scale-105 transition"
+        >
           산책신청하기
         </button>
       </div>

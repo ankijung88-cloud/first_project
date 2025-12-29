@@ -1,70 +1,106 @@
-// 1. 가져오기(Import) 문법 오류 수정: useState와 useEffect 사이에 쉼표가 필요합니다.
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
-import ScrollNavigator from "./components/ScrollNavigator";
+import SmokingMap from "./components/SmokingMap";
+import CrowdMap from "./components/CrowdMap";
+import WalkCourseList from "./components/WalkCourseList";
+import WalkCourseMap from "./components/WalkCourseMap";
 import Hero from "./components/Hero";
 import Intro from "./components/Intro";
-import Guide from "./components/Guide";
 import SmokingBooth from "./components/SmokingBooth";
 import Crowd from "./components/Crowd";
+import Guide from "./components/Guide";
 import Footer from "./components/footer";
-import SmokingMap from "./components/SmokingMap";
+import ScrollNavigator from "./components/ScrollNavigator";
 
 export default function App() {
-  const [showMap, setShowMap] = useState<boolean>(false);
+  const [showMap, setShowMap] = useState(false);
+  const [showCrowdMap, setShowCrowdMap] = useState(false);
+  const [showWalkList, setShowWalkList] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
 
-  // 지도가 열릴 때 배경 스크롤을 방지하는 로직입니다.
   useEffect(() => {
-    if (showMap) {
+    if (showMap || showCrowdMap || showWalkList || selectedCourse) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [showMap]);
+  }, [showMap, showCrowdMap, showWalkList, selectedCourse]);
+
+  // 1. 지도를 닫을 때 특정 섹션으로 복귀하는 핸들러
+  const handleCloseSmokingMap = () => {
+    setShowMap(false);
+    setTimeout(() => {
+      document
+        .getElementById("section-smoking")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
+  const handleCloseCrowdMap = () => {
+    setShowCrowdMap(false);
+    setTimeout(() => {
+      document
+        .getElementById("section-crowd")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
+  // 조건부 렌더링: 지도가 열려있을 때
+  if (selectedCourse)
+    return (
+      <WalkCourseMap
+        course={selectedCourse}
+        onBack={() => setSelectedCourse(null)}
+      />
+    );
+  if (showWalkList)
+    return (
+      <WalkCourseList
+        onBack={() => setShowWalkList(false)}
+        onSelect={(course) => setSelectedCourse(course)}
+      />
+    );
+  if (showMap) return <SmokingMap onBack={handleCloseSmokingMap} />;
+  if (showCrowdMap) return <CrowdMap onBack={handleCloseCrowdMap} />;
 
   return (
-    <div className="relative w-full h-full">
-      {/* 조건부 렌더링: 
-        지도가 열려있을 때(showMap: true)와 아닐 때를 구분합니다. 
-      */}
-      {!showMap ? (
-        <main className="w-full">
-          <Navbar />
+    <div className="relative w-full min-h-screen overflow-x-hidden scroll-smooth bg-white">
+      <main className="w-full">
+        {/* Navbar 연동: 정상 작동하는 Navbar의 Props에 맞춰 함수 전달 */}
+        <Navbar
+          onWalkClick={() => setShowWalkList(true)}
+          onShowSmokingMap={() => setShowMap(true)}
+          onShowCrowdMap={() => setShowCrowdMap(true)}
+        />
 
-          <section id="section-0" className="page-section h-screen snap-start">
-            <Hero />
-          </section>
+        {/* 각 섹션 ID 부여: Navbar의 handleMenuAction과 일치해야 합니다. */}
+        <section id="section-hero" className="page-section h-screen">
+          <Hero />
+        </section>
 
-          <section className="page-section h-screen snap-start">
-            <Intro />
-          </section>
+        <section id="section-intro" className="page-section h-screen">
+          <Intro />
+        </section>
 
-          <section className="page-section h-screen snap-start">
-            {/* SmokingBooth 내부 버튼 클릭 시 setShowMap(true)가 실행되도록 
-              Props를 올바르게 전달합니다. 
-            */}
-            <SmokingBooth onShowMap={() => setShowMap(true)} />
-          </section>
+        <section id="section-smoking" className="page-section h-screen">
+          <SmokingBooth onShowMap={() => setShowMap(true)} />
+        </section>
 
-          <section className="page-section h-screen snap-start">
-            <Crowd />
-          </section>
+        <section id="section-crowd" className="page-section h-screen">
+          <Crowd onShowCrowdMap={() => setShowCrowdMap(true)} />
+        </section>
 
-          <section className="page-section relative h-screen snap-start">
-            <Guide />
-            <div className="absolute bottom-0 left-0 w-full">
-              <Footer />
-            </div>
-          </section>
+        <section id="section-guide" className="page-section relative h-screen">
+          <div className="w-full h-full flex items-center justify-center">
+            <Guide onWalkClick={() => setShowWalkList(true)} />
+          </div>
+          <div className="absolute bottom-0 left-0 w-full">
+            <Footer />
+          </div>
+        </section>
 
-          <ScrollNavigator />
-        </main>
-      ) : (
-        /* 지도 컴포넌트 호출: 
-          onBack 프롭스를 통해 지도를 닫는 기능을 연결합니다. 
-        */
-        <SmokingMap onBack={() => setShowMap(false)} />
-      )}
+        <ScrollNavigator />
+      </main>
     </div>
   );
 }

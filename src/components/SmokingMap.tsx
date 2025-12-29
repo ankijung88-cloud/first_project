@@ -16,11 +16,10 @@ export default function SmokingMap({ onBack }: SmokingMapProps) {
   const [keyword, setKeyword] = useState("");
   const markersRef = useRef<any[]>([]);
 
-  // 1. 특정 좌표를 기준으로 주변 데이터를 생성하는 함수
   const generateDataAtLocation = (lat: number, lng: number) => {
     const dummyData = [];
-    const step = 0.005; // 약 500m 간격
-    const range = 20; // 중심 반경 20개씩 (0.001기준 총 1,600개 - 성능을 위해 조정)
+    const step = 0.005;
+    const range = 5; // 성능을 위해 범위를 소폭 조정했습니다.
 
     for (let i = -range; i <= range; i++) {
       for (let j = -range; j <= range; j++) {
@@ -33,9 +32,7 @@ export default function SmokingMap({ onBack }: SmokingMapProps) {
     return dummyData;
   };
 
-  // 2. 현재 지도 화면에 마커를 그리는 핵심 함수
   const renderMarkers = (map: any) => {
-    // 기존 마커 제거
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
 
@@ -71,18 +68,15 @@ export default function SmokingMap({ onBack }: SmokingMapProps) {
           );
           mapRef.current = map;
 
-          // 내 현재 위치 표시
           new window.kakao.maps.Marker({
             position: new window.kakao.maps.LatLng(lat, lng),
             map: map,
           });
 
-          // 지도가 멈출 때마다 마커 새로 그리기
           window.kakao.maps.event.addListener(map, "idle", () => {
             renderMarkers(map);
           });
 
-          // 초기 실행
           renderMarkers(map);
         }
       });
@@ -124,7 +118,6 @@ export default function SmokingMap({ onBack }: SmokingMapProps) {
       if (status === window.kakao.maps.services.Status.OK) {
         const moveLatLng = new window.kakao.maps.LatLng(data[0].y, data[0].x);
         mapRef.current.setCenter(moveLatLng);
-        // 이동 후 자동으로 idle 이벤트가 발생하며 renderMarkers가 실행됩니다.
       } else {
         alert("검색 결과가 없습니다.");
       }
@@ -132,34 +125,54 @@ export default function SmokingMap({ onBack }: SmokingMapProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-white z-[9999]">
-      <div ref={mapContainerRef} className="w-full h-full" />
-      <div className="absolute top-5 left-5 z-[10001] w-72">
+    <div className="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 p-4">
+      {/* 1. 상단 검색 바 영역 (지도 프레임 밖) */}
+      <div className="w-[1024px] mb-4 flex justify-between items-end">
+        <div>
+          <h2 className="text-xl font-bold text-gray-800">
+            실시간 흡연구역 위치 확인
+          </h2>
+          <p className="text-sm text-gray-500">
+            지도에 흡연구역 마커가 표시됩니다.
+          </p>
+        </div>
         <form
           onSubmit={onSearch}
-          className="flex gap-2 p-2 bg-white rounded-lg shadow-lg"
+          className="flex gap-2 p-3 bg-white rounded-lg shadow-md"
         >
           <input
             type="text"
             placeholder="지역 검색 (예: 강남역)"
-            className="flex-1 px-3 py-2 outline-none border-b focus:border-blue-500 text-sm"
+            className="flex-1 px-4 py-2 outline-none border rounded-md focus:border-blue-500 text-base"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors"
           >
             검색
           </button>
         </form>
       </div>
-      <button
-        onClick={onBack}
-        className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-8 py-3 rounded-full shadow-2xl z-[10000]"
+
+      {/* 2. 지도 프레임 (1024 * 800) */}
+      <div
+        className="relative shadow-2xl border border-gray-200 rounded-xl overflow-hidden"
+        style={{ width: "1024px", height: "600px" }}
       >
-        종료하기
-      </button>
+        <div ref={mapContainerRef} className="w-full h-full" />
+      </div>
+
+      {/* 3. 하단 버튼 영역 */}
+      <div className="mt-6 flex justify-center">
+        <button
+          onClick={onBack}
+          className="bg-gray-900 hover:bg-black text-white px-10 py-3 rounded-full shadow-lg transition-transform active:scale-95"
+        >
+          종료하기
+        </button>
+      </div>
     </div>
   );
 }
